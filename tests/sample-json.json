@@ -1,0 +1,444 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Test sample file",
+    "description": "Test sample file",
+    "version": "1.0.0",
+    "contact": {
+      "name": "sandanat",
+      "email": "sandanat7@gmail.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://server.conm",
+      "description": "Fake server"
+    }
+  ],
+  "paths": {
+    "/plain-primitive-schema-in-response": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/plain-object-schema-in-response": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ref-schema-in-response": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataTypes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ref-response": {
+      "get": {
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/RefResponse"
+          }
+        }
+      }
+    },
+    "/combined-arrays": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CombinedArrays"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/combined-objects": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CombinedObjects"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "RefResponse": {
+        "description": "success",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/DataTypes"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Record": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
+      "Country": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        }
+      },
+      "DataTypes": {
+        "type": "object",
+        "properties": {
+          "integer": {
+            "type": "integer"
+          },
+          "number": {
+            "type": "number"
+          },
+          "numberFloat": {
+            "type": "number",
+            "format": "float"
+          },
+          "numberDouble": {
+            "type": "number"
+          },
+          "numberBoundaries": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 20
+          },
+          "numberExclusiveBoundaries": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 20,
+            "exclusiveMinimum": true,
+            "exclusiveMaximum": true
+          },
+          "numberMultiple": {
+            "type": "number",
+            "multipleOf": 4
+          },
+          "boolean": {
+            "type": "boolean",
+            "format": "double"
+          },
+          "string": {
+            "type": "string"
+          },
+          "stringLen": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 9
+          },
+          "stringByte": {
+            "type": "string",
+            "format": "byte"
+          },
+          "stringBinary": {
+            "type": "string",
+            "format": "binary"
+          },
+          "stringDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "stringDateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "stringPassword": {
+            "type": "string",
+            "format": "password"
+          },
+          "stringEmail": {
+            "type": "string",
+            "format": "email"
+          },
+          "stringUuid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "stringUri": {
+            "type": "string",
+            "format": "uri"
+          },
+          "stringHostname": {
+            "type": "string",
+            "format": "hostname"
+          },
+          "stringIpv4": {
+            "type": "string",
+            "format": "ipv4"
+          },
+          "stringIpv6": {
+            "type": "string",
+            "format": "ipv6"
+          },
+          "stringPattern": {
+            "type": "string",
+            "pattern": "^\\d{3}-\\d{2}-\\d{4}$"
+          },
+          "stringNullable": {
+            "type": "string",
+            "nullable": true
+          },
+          "arrayNumberPrimitives": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "arrayStringPrimitives": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "arrayObjects": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "arrayRefObjects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Record"
+            }
+          },
+          "arrayLength": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 1,
+            "maxItems": 10
+          },
+          "arrayUniqPrimitives": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "uniqueItems": true
+          },
+          "objectNested": {
+            "type": "object",
+            "properties": {
+              "surname": {
+                "type": "string"
+              },
+              "address": {
+                "type": "object",
+                "properties": {
+                  "street": {
+                    "type": "string"
+                  },
+                  "house": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          },
+          "enum": {
+            "type": "string",
+            "enum": [
+              "food",
+              "goods"
+            ]
+          }
+        }
+      },
+      "CircularObject": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "child": {
+            "$ref": "#/components/schemas/CircularObject"
+          }
+        }
+      },
+      "CombinedArrays": {
+        "type": "object",
+        "properties": {
+          "oneOf": {
+            "type": "object",
+            "properties": {
+              "primitives": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    }
+                  ]
+                }
+              },
+              "objects": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Record"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Country"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "allOf": {
+            "type": "object",
+            "properties": {
+              "objects": {
+                "type": "array",
+                "items": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Record"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Country"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "anyOf": {
+            "type": "object",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Record"
+              },
+              {
+                "$ref": "#/components/schemas/Country"
+              }
+            ]
+          }
+        }
+      },
+      "CombinedObjects": {
+        "type": "object",
+        "properties": {
+          "oneOf": {
+            "type": "object",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Record"
+              },
+              {
+                "$ref": "#/components/schemas/Country"
+              }
+            ]
+          },
+          "allOf": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Record"
+              },
+              {
+                "$ref": "#/components/schemas/Country"
+              }
+            ]
+          },
+          "anyOf": {
+            "type": "object",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Record"
+              },
+              {
+                "$ref": "#/components/schemas/Country"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
