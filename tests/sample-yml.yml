@@ -6,14 +6,37 @@ info:
   version: 1.0.0
   contact:
     name: sandanat
-    email: example@example.com
+    email: sandanat7@gmail.com
 
 servers:
   - url: http://server.conm
     description: Fake server
 
 paths:
-  /data-types:
+  /plain-primitive-schema-in-response:
+    get:
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: number
+
+  /plain-object-schema-in-response:
+    get:
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+
+  /ref-schema-in-response:
     get:
       responses:
         200:
@@ -23,7 +46,41 @@ paths:
               schema:
                 $ref: "#/components/schemas/DataTypes"
 
+  /ref-response:
+    get:
+      responses:
+        200:
+          $ref: "#/components/responses/RefResponse"
+
+  /combined-arrays:
+    get:
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CombinedArrays"
+
+  /combined-objects:
+    get:
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CombinedObjects"
+
 components:
+  responses:
+    RefResponse:
+      description: success
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DataTypes"
+
   schemas:
     Record:
       type: object
@@ -36,6 +93,14 @@ components:
       required:
         - id
         - name
+
+    Country:
+      type: object
+      properties:
+        code:
+          type: string
+        title:
+          type: string
 
     DataTypes:
       type: object
@@ -118,12 +183,6 @@ components:
           type: array
           items:
             type: string
-        arrayOneOfPrimitive:
-          type: array
-          items:
-            oneOf:
-              - type: string
-              - type: number
         arrayObjects:
           type: array
           items:
@@ -161,6 +220,11 @@ components:
                   type: string
                 house:
                   type: number
+        enum:
+          type: string
+          enum:
+            - food
+            - goods
 
     CircularObject:
       type: object
@@ -171,6 +235,54 @@ components:
         child:
           $ref: "#/components/schemas/CircularObject"
 
+    CombinedArrays:
+      type: object
+      properties:
+        oneOf:
+          type: object
+          properties:
+            primitives:
+              type: array
+              items:
+                oneOf:
+                  - type: string
+                  - type: number
+            objects:
+              type: array
+              items:
+                oneOf:
+                  - $ref: "#/components/schemas/Record"
+                  - $ref: "#/components/schemas/Country"
+        allOf:
+          type: object
+          properties:
+            objects:
+              type: array
+              items:
+                allOf:
+                  - $ref: "#/components/schemas/Record"
+                  - $ref: "#/components/schemas/Country"
+        anyOf:
+          type: object
+          anyOf:
+            - $ref: "#/components/schemas/Record"
+            - $ref: "#/components/schemas/Country"
 
-
-
+    CombinedObjects:
+      type: object
+      properties:
+        oneOf:
+          type: object
+          oneOf:
+            - $ref: "#/components/schemas/Record"
+            - $ref: "#/components/schemas/Country"
+        allOf:
+          type: object
+          allOf:
+            - $ref: "#/components/schemas/Record"
+            - $ref: "#/components/schemas/Country"
+        anyOf:
+          type: object
+          anyOf:
+            - $ref: "#/components/schemas/Record"
+            - $ref: "#/components/schemas/Country"
